@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Το Μυστικό του Σιωπηλού Κώδικα</title>
+<style>
+:root{--bg:#1c1530;--bg2:#2b2145;--card:#f6ead0;--ink:#2d2417;--gold:#d4a62a;--gold2:#8a5a00;--pur:#6b2d5c;--ok:#2f7d32;--no:#b3541e;--mute:#6b5a3e;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--card:#2e2616;--ink:#f3e9d0;--mute:#c4b48f;--gold2:#e8bf55}}
+:root[data-theme="dark"]{--card:#2e2616;--ink:#f3e9d0;--mute:#c4b48f;--gold2:#e8bf55}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at top,var(--bg2),var(--bg));color:var(--ink);font:18px/1.55 Georgia,"Times New Roman",serif}
+.wrap{max-width:760px;margin:0 auto;padding:14px}
+.top{display:flex;align-items:center;gap:10px;color:#f3e3b0;font-size:.9rem;margin-bottom:10px}
+.bar{flex:1;height:14px;border-radius:9px;background:#0005;border:1px solid var(--gold);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),#f3d27a);transition:width .6s}
+.code{display:flex;gap:6px}
+.code b{width:30px;height:34px;border:2px solid var(--gold);border-radius:6px;background:#0004;color:#ffe9a6;display:grid;place-items:center;font-size:1.1rem}
+.card{background:var(--card);border:3px double var(--gold2);border-radius:18px;padding:20px;box-shadow:0 8px 28px #0007}
+h1{font-size:1.8rem;margin:.2em 0;color:var(--gold2);text-align:center}
+h2{font-size:1.35rem;margin:.2em 0 .4em;color:var(--gold2)}
+.sub{text-align:center;color:var(--pur);font-style:italic;margin:0 0 12px}
+.art{display:block;margin:6px auto;max-width:200px}
+.story{white-space:pre-line;font-style:italic;border-left:4px solid var(--gold);padding-left:12px}
+button{font:inherit;cursor:pointer}
+.btn{background:var(--pur);color:#fff;border:2px solid var(--gold);border-radius:12px;padding:12px 20px;font-weight:700;margin:6px 6px 0 0;min-height:48px}
+.btn.alt{background:transparent;color:var(--ink);border-color:var(--gold2)}
+.btn:disabled{opacity:.45;cursor:default}
+.center{text-align:center}
+.opt{display:block;width:100%;text-align:left;margin:8px 0;padding:14px 16px;border-radius:12px;border:2px solid var(--gold2);background:transparent;color:var(--ink);min-height:52px}
+.opt:hover{background:#d4a62a33}
+.opt.ok{background:#2f7d3230;border-color:var(--ok)}
+.opt.no{background:#b3541e30;border-color:var(--no)}
+.fb{margin:10px 0;padding:12px;border-radius:12px;background:#d4a62a30;font-weight:600}
+.hint{margin:10px 0;padding:10px 12px;border:2px dashed var(--gold2);border-radius:12px;font-size:.95rem}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0;padding:8px;border-radius:10px;border:2px solid transparent}
+.row.ok{border-color:var(--ok)}
+.row.no{border-color:var(--no)}
+.row b{flex:1 1 140px}
+select,input[type=text],textarea{font:inherit;padding:10px;border-radius:10px;border:2px solid var(--gold2);background:var(--card);color:var(--ink);max-width:100%}
+select{flex:2 1 220px}
+.stamp{display:inline-block;margin:4px;padding:6px 12px;border:2px solid var(--gold2);border-radius:999px;font-size:.9rem}
+.big{font-size:3.2rem;text-align:center;letter-spacing:6px;color:var(--gold2);font-weight:700}
+.note{font-size:.85rem;color:var(--mute)}
+.roles li{margin:4px 0}
+@media print{body{background:#fff}.top,.noprint{display:none!important}.card{box-shadow:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="top noprint" id="top" hidden><span id="pct">0%</span><div class="bar"><i id="fill"></i></div><div class="code" id="code" title="Μυστικός κώδικας"></div></div>
+<div class="card" id="app" aria-live="polite"></div>
+<p class="note center noprint" style="color:#cdbf98">Φανταστική ιστορία εμπνευσμένη από το Βυζάντιο. Οι πληροφορίες για τη μουσική ακολουθούν το σχολικό βιβλίο.</p>
+</div>
+<script>
+const svgMs='<svg class="art" viewBox="0 0 200 120" role="img" aria-label="Χειρόγραφο με κερί"><rect x="30" y="20" width="140" height="90" rx="6" fill="#e7cf98" stroke="#8a5a00" stroke-width="3"/><path d="M45 45h110M45 62h110M45 79h80" stroke="#6b2d5c" stroke-width="3" stroke-linecap="round" stroke-dasharray="14 6 3 6"/><circle cx="150" cy="92" r="11" fill="#9b2d2d"/><rect x="12" y="55" width="10" height="45" fill="#f3e3b0"/><path d="M17 50c-5-7 0-12 0-16 5 5 5 10 0 16z" fill="#f59e0b"/></svg>';
+const R=[
+{n:"Η Πύλη της Κωνσταντινούπολης",ic:"🏛️",L:"Μ",s:"Ο Ερευνητής της Ιστορίας",in:"Μια βαριά πύλη φρουρεί την είσοδο των τειχών. Απαντήστε σωστά για να ανοίξει.",t:[
+{k:"mc",q:"Ποια πόλη ήταν η πρωτεύουσα της Βυζαντινής Αυτοκρατορίας;",o:["Αθήνα","Κωνσταντινούπολη","Αλεξάνδρεια"],c:1,h:"Λεγόταν και «Βασιλεύουσα» και είχε μεγάλα τείχη."},
+{k:"mc",q:"Ποιο από τα παρακάτω συνδέεται με την πολιτιστική κληρονομιά του Βυζαντίου;",o:["Τα ψηφιδωτά","Οι διαστημικοί σταθμοί","Οι σύγχρονες κονσόλες παιχνιδιών"],c:0,h:"Φτιάχνονταν από μικρά πολύχρωμα κομμάτια."},
+{k:"mc",q:"Ποιο κτίσμα συνδέεται στενά με τη θρησκευτική και μουσική ζωή της βυζαντινής Κωνσταντινούπολης;",o:["Η Αγία Σοφία","Ένα σύγχρονο στούντιο κινηματογράφου","Ένας σιδηροδρομικός σταθμός του 20ού αιώνα"],c:0,h:"Είναι ένας περίφημος ναός με μεγάλο τρούλο."}]},
+{n:"Το Εργαστήριο των Μουσικών Σημάτων",ic:"📜",L:"Ε",s:"Ο Αναγνώστης των Σημαδιών",in:"Στο εργαστήριο γράφονται τα μουσικά σημάδια. Η γραφή της βυζαντινής μουσικής λέγεται βυζαντινή παρασημαντική.",t:[
+{k:"mc",q:"Πώς ονομάζεται η γραφή της βυζαντινής μουσικής;",o:["Πεντάγραμμο","Βυζαντινή παρασημαντική","Ελληνικό αλφάβητο"],c:1,h:"Η λέξη έχει μέσα της τη λέξη «σημάδι»."},
+{k:"mc",q:"Τι δείχνουν οι μαρτυρίες;",o:["Πόσο γρήγορα τραγουδάμε","Από ποιο φθόγγο ξεκινά η μελωδία","Το όνομα του ψάλτη"],c:1,h:"Λένε από πού ξεκινάμε."},
+{k:"match",q:"Αντιστοίχισε κάθε έννοια με την περιγραφή της.",p:[["Χειρόγραφο","Κείμενο γραμμένο με το χέρι"],["Μαρτυρία","Σημάδι που δείχνει από ποιο φθόγγο ξεκινά η μελωδία"],["Χαρακτήρας ποσότητας","Σημάδι που δείχνει πόσο θα ανέβει ή θα κατέβει η φωνή"]],h:"Διάβασε προσεκτικά τις λέξεις: τι δείχνει το καθένα;"}]},
+{n:"Η Φωνή που Κρύβει το Κλειδί",ic:"🎵",L:"Λ",s:"Ο Προσεκτικός Ακροατής",in:"Στο παρεκκλήσι ηχεί μόνο η ανθρώπινη φωνή, χωρίς όργανα. Τι ξέρουμε για αυτήν;",aud:1,t:[
+{k:"mc",q:"Η βυζαντινή εκκλησιαστική μουσική χρησιμοποιεί μουσικά όργανα;",o:["Ναι, πάντα πιάνο","Όχι, είναι φωνητική","Ναι, πάντα κιθάρα"],c:1,h:"Ο ψάλτης τραγουδά μόνο με τη φωνή του."},
+{k:"mc",q:"Μονοφωνική σημαίνει ότι ακούγεται…",o:["μία κύρια μελωδική γραμμή","πολλές διαφορετικές μελωδίες μαζί","μόνο ρυθμός"],c:0,h:"Μόνος ήχος, μία μελωδία."},
+{k:"mc",q:"Τι συνοδεύει τη μελωδία στη βυζαντινή μουσική;",o:["Ένα τύμπανο","Ένας συνεχόμενος φθόγγος, το ίσο","Ένας χορός"],c:1,h:"Ένας φθόγγος που κρατιέται συνεχώς."}]},
+{n:"Ο Ναός των Ήχων",ic:"⛪",L:"Ο",s:"Ο Φύλακας της Παράδοσης",in:"Στον ναό ο ψάλτης αποδίδει το μέλος. Ταίριαξε τις έννοιες και σκέψου γιατί η παράδοση μένει ζωντανή.",t:[
+{k:"match",q:"Αντιστοίχισε κάθε έννοια με το νόημά της.",p:[["Ψάλτης","Αποδίδει το μέλος με τη φωνή του"],["Μουσικό χειρόγραφο","Κρατά γραμμένη τη μελωδία"],["Σημάδια","Είναι η γραφή της βυζαντινής μουσικής"],["Ίσο","Ο συνεχόμενος φθόγγος που συνοδεύει τη μελωδία"]],h:"Σκέψου: ποιος τραγουδά, τι γράφεται, πώς γράφεται."},
+{k:"mc",q:"Γιατί είναι σημαντικό να μαθαίνουμε και να μεταδίδουμε τη μουσική παράδοση;",o:["Για να μένει ζωντανή και να τη γνωρίζουν οι επόμενες γενιές","Για να μην ακούμε ποτέ άλλη μουσική","Δεν είναι σημαντικό"],c:0,h:"Σκέψου τι χάνεται αν δεν τη μάθει κανείς."}]},
+{n:"Το Κρυφό Θησαυροφυλάκιο",ic:"🗝️",L:"Σ",s:"Ο Αποκρυπτογράφος του Μυστικού",in:"Μπροστά σας το σεντούκι. Η τελευταία δοκιμασία δίνει το πέμπτο γράμμα. Μετά βάλτε τον κώδικα.",t:[
+{k:"mc",q:"Ποια λέξη ταιριάζει σε αυτό που ψάλλει ο ψάλτης και μεταδίδεται από άνθρωπο σε άνθρωπο;",o:["Μέλος (μελωδία)","Τηλεόραση","Πύργος"],c:0,h:"Είναι κάτι μουσικό που τραγουδιέται."},
+{k:"code",q:"Βάλε τον κώδικα με τα πέντε γράμματα που κέρδισες.",hs:["Είμαι κάτι που συνδέεται με τη μουσική.","Μπορώ να αποδοθώ με τη φωνή και να μεταδοθώ από άνθρωπο σε άνθρωπο.","Στη βυζαντινή μουσική συναντάμε τον όρο μουσικό μέλος. Ο κώδικας έχει 5 γράμματα και ξεκινά από Μ."]}]}
+];
+const INTRO="Προς τους Νεαρούς Μελωδούς…\n\nΣτην Κωνσταντινούπολη, στο έτος 1025 (φανταστική ιστορία), ένας πολύτιμος μουσικός κώδικας εξαφανίστηκε από το αυτοκρατορικό εργαστήριο χειρογράφων.\n\nΣτις σελίδες του υπήρχαν μουσικά σημάδια που βοηθούσαν τους ψάλτες να θυμούνται και να αποδίδουν τις μελωδίες.\n\nΟ τελευταίος φύλακάς του άφησε πίσω του πέντε δοκιμασίες. Για να βρείτε το χειρόγραφο, λύστε τις δοκιμασίες και ανακαλύψτε τον μυστικό κώδικα.\n\nΗ αποστολή διαρκεί περίπου 35 λεπτά, χωρίς βιασύνη.\n\nΗ αποστολή σας αρχίζει τώρα…";
+const app=document.getElementById("app");
+let ri=0,ti=0,done=[],hintShown=false;
+function el(t,c,x){const e=document.createElement(t);if(c)e.className=c;if(x!==undefined)e.textContent=x;return e}
+function btn(txt,fn,alt){const b=el("button","btn"+(alt?" alt":""),txt);b.type="button";b.onclick=fn;return b}
+function upd(){const p=Math.round(done.length/5*100);document.getElementById("pct").textContent=p+"%";document.getElementById("fill").style.width=p+"%";const c=document.getElementById("code");c.textContent="";const order=["Ο","Μ","Σ","Ε","Λ"];order.forEach(L=>{const got=done.some(i=>R[i].L===L);c.appendChild(el("b","",got?L:"?"))})}
+function clear(){app.textContent="";hintShown=false;upd()}
+function home(){document.getElementById("top").hidden=true;app.textContent="";app.append(el("h1","","Το Μυστικό του Σιωπηλού Κώδικα"),el("p","sub","Η Αποστολή των Νεαρών Μελωδών"));app.insertAdjacentHTML("beforeend",svgMs);app.append(el("p","center","Ένα πολύτιμο βυζαντινό μουσικό χειρόγραφο εξαφανίστηκε. Πέντε δοκιμασίες σάς χωρίζουν από την αποκάλυψη του μυστικού του."),el("p","center note","Πρόοδος: 0%"));const d=el("div","center");d.append(btn("Ξεκίνα την αποστολή",story),btn("Οδηγίες παιχνιδιού",rules,true));app.appendChild(d)}
+function rules(){app.textContent="";app.append(el("h2","","Οδηγίες"));const u=el("ul","roles");["Απαντάτε στις ερωτήσεις με κλικ. Αν κάνετε λάθος, δοκιμάζετε ξανά, δεν υπάρχει ποινή.","Κάθε αίθουσα δίνει ένα γράμμα. Μαζεύετε πέντε και φτιάχνετε τον κώδικα.","Το κουμπί «Χρειάζομαι βοήθεια» δίνει υπόδειξη.","Παίζετε μόνοι ή σε ομάδες 3–4 μαθητών με εναλλασσόμενους ρόλους: Ιστορικός (διαβάζει τα στοιχεία), Ακροατής (παρατηρεί), Αποκρυπτογράφος (γράφει γράμματα και κώδικα), Συντονιστής (προσέχει να μιλούν όλοι). Συζητάτε και εξηγείτε γιατί διαλέξατε κάθε απάντηση."].forEach(x=>u.appendChild(el("li","",x)));app.append(u,btn("Πίσω",home,true),btn("Ξεκίνα την αποστολή",story))}
+function story(){document.getElementById("top").hidden=false;clear();app.append(el("h2","","Η αποστολή"),el("p","story",INTRO),btn("Αναλαμβάνουμε την αποστολή",()=>room(0)))}
+function room(i){ri=i;ti=0;clear();const r=R[i];app.append(el("h2","",r.ic+" Αίθουσα "+(i+1)+": "+r.n),el("p","story",r.in));if(r.aud)audioSlot();app.appendChild(btn("Μπες στην αίθουσα",task))}
+function audioSlot(){const d=el("div","hint","🎧 Θέση ακουστικού αποσπάσματος: ο εκπαιδευτικός μπορεί να φορτώσει ένα σύντομο απόσπασμα βυζαντινής μουσικής, με νόμιμα δικαιώματα χρήσης. Οι ερωτήσεις αυτής της αίθουσας λύνονται και χωρίς ήχο.");const f=el("input");f.type="file";f.accept="audio/*";f.setAttribute("aria-label","Φόρτωση ήχου");const a=el("audio");a.controls=true;a.hidden=true;f.onchange=()=>{if(f.files[0]){a.src=URL.createObjectURL(f.files[0]);a.hidden=false}};d.append(el("br"),f,a);app.appendChild(d)}
+function task(){clear();const r=R[ri],t=r.t[ti];app.append(el("p","note","Αίθουσα "+(ri+1)+" · Δοκιμασία "+(ti+1)+" από "+r.t.length),el("h2","",t.q));if(t.k==="mc")mc(t);else if(t.k==="match")match(t);else code(t);const help=btn("💡 Χρειάζομαι βοήθεια",()=>{const H=t.hs?t.hs[Math.min(hn,t.hs.length-1)]:t.h;hn++;let h=app.querySelector(".hint");if(!h){h=el("div","hint");app.appendChild(h)}h.textContent="Υπόδειξη: "+H},true);hn=0;app.appendChild(help)}
+let hn=0;
+function next(){const r=R[ri];if(ti+1<r.t.length){ti++;task()}else finish()}
+function mc(t){const fb=el("div","fb");fb.hidden=true;const bs=t.o.map((o,i)=>{const b=el("button","opt",o);b.type="button";b.onclick=()=>{if(i===t.c){bs.forEach(x=>x.disabled=true);b.classList.add("ok");fb.hidden=false;fb.textContent="✅ Μπράβο! Σωστή απάντηση.";fb.after(btn("Συνέχεια →",next))}else{b.classList.add("no");b.disabled=true;fb.hidden=false;fb.textContent="💪 Σχεδόν! Δοκίμασε μια άλλη απάντηση."}};app.appendChild(b);return b});app.appendChild(fb)}
+function match(t){const rights=t.p.map(x=>x[1]);const rows=t.p.map((x,i)=>{const row=el("div","row");row.appendChild(el("b","",x[0]));const s=el("select");s.setAttribute("aria-label",x[0]);s.appendChild(new Option("Διάλεξε…",""));[...rights].sort((a,b)=>a.length-b.length).forEach(r=>s.appendChild(new Option(r,r)));row.appendChild(s);app.appendChild(row);return{row,s,a:x[1]}});const fb=el("div","fb");fb.hidden=true;const chk=btn("Έλεγχος",()=>{let n=0;rows.forEach(r=>{const ok=r.s.value===r.a;if(ok)n++;r.row.className="row "+(ok?"ok":"no")});fb.hidden=false;if(n===rows.length){fb.textContent="✅ Όλα σωστά! Εξαιρετική δουλειά.";chk.disabled=true;fb.after(btn("Συνέχεια →",next))}else fb.textContent="💪 "+n+" από "+rows.length+" σωστά. Διόρθωσε όσα έχουν πορτοκαλί περίγραμμα και ξαναδοκίμασε."});app.append(chk,fb)}
+function code(t){const g=el("div","big");g.textContent=["Ο","Μ","Σ","Ε","Λ"].map(L=>R.some((r,i)=>r.L===L&&done.includes(i))||L==="Σ"?L:"?").join(" ");app.appendChild(g);app.appendChild(el("p","note center","Τα γράμματα είναι ανακατεμένα. Βάλ’ τα στη σωστή σειρά και φτιάξε μια λέξη."));const inp=el("input");inp.type="text";inp.setAttribute("aria-label","Κώδικας");inp.autocomplete="off";inp.maxLength=12;const fb=el("div","fb");fb.hidden=true;const go=btn("Άνοιγμα σεντουκιού",()=>{const v=inp.value.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toUpperCase().trim();if(v==="ΜΕΛΟΣ"){finish()}else{fb.hidden=false;fb.textContent="🔒 Το σεντούκι δεν άνοιξε ακόμα. Δοκίμασε ξανά ή πάτησε «Χρειάζομαι βοήθεια»."}});app.append(inp,el("br"),go,fb)}
+function finish(){if(!done.includes(ri))done.push(ri);upd();const r=R[ri];if(ri===4)return end();clear();app.append(el("h2","","🎉 Η αίθουσα ολοκληρώθηκε!"),el("p","","Κερδίσατε το γράμμα «"+r.L+"» και τη σφραγίδα:"),el("span","stamp","🏅 "+r.s),el("br"),btn("Επόμενη αίθουσα →",()=>room(ri+1)));if(ri>0)app.appendChild(btn("Επανάληψη προηγούμενης",()=>room(ri-1),true))}
+function end(){clear();app.append(el("h1","","ΑΠΟΣΤΟΛΗ ΕΞΕΤΕΛΕΣΘΗ!"),el("div","big","🗝️ ΜΕΛΟΣ"),el("p","center","Το χειρόγραφο βρέθηκε!"),el("p","story","Εσείς, οι Νεαροί Μελωδοί, αποδείξατε ότι έχετε τα αυτιά των μουσικών, το μυαλό των ερευνητών και την καρδιά των ανθρώπων που αγαπούν την παράδοση.\n\nΟ κώδικας αποκρυπτογραφήθηκε. Η μελωδία δεν χάθηκε.\n\nΑπό σήμερα, είστε οι νέοι φύλακες της βυζαντινής μουσικής!\n\nΟ πραγματικός θησαυρός δεν είναι μόνο το χειρόγραφο, αλλά η ζωντανή μουσική παράδοση που μένει όταν οι άνθρωποι τη μαθαίνουν, την ακούν και τη μεταδίδουν."));const st=el("div","center");R.forEach(r=>st.appendChild(el("span","stamp","🏅 "+r.s)));app.appendChild(st);app.append(el("h2","","Φύλακας της Βυζαντινής Μουσικής"),el("p","","Ποιο ήταν το πιο ενδιαφέρον πράγμα που ανακάλυψες για τη βυζαντινή μουσική;"));const ta=el("textarea");ta.rows=3;ta.style.width="100%";ta.setAttribute("aria-label","Αναστοχασμός");app.append(ta,el("br"),btn("Ξαναπαίξε",()=>{done=[];home()}),btn("Εκτύπωση πιστοποιητικού",()=>{try{window.print()}catch(e){}},true))}
+home();upd();
+</script>
+</body>
+</html>
